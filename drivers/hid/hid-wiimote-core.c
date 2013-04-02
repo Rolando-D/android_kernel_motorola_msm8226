@@ -1314,6 +1314,7 @@ static void wiimote_destroy(struct wiimote_data *wdata)
 	wiimote_leds_destroy(wdata);
 
 	power_supply_unregister(&wdata->battery);
+	kfree(wdata->battery.name);
 	input_unregister_device(wdata->accel);
 	input_unregister_device(wdata->ir);
 	input_unregister_device(wdata->input);
@@ -1378,9 +1379,14 @@ static int wiimote_hid_probe(struct hid_device *hdev,
 	wdata->battery.properties = wiimote_battery_props;
 	wdata->battery.num_properties = ARRAY_SIZE(wiimote_battery_props);
 	wdata->battery.get_property = wiimote_battery_get_property;
-	wdata->battery.name = "wiimote_battery";
 	wdata->battery.type = POWER_SUPPLY_TYPE_BATTERY;
 	wdata->battery.use_for_apm = 0;
+	wdata->battery.name = kasprintf(GFP_KERNEL, "wiimote_battery_%s",
+					wdata->hdev->uniq);
+	if (!wdata->battery.name) {
+		ret = -ENOMEM;
+		goto err_battery_name;
+	}
 
 	ret = power_supply_register(&wdata->hdev->dev, &wdata->battery);
 	if (ret) {
@@ -1419,6 +1425,8 @@ err_free:
 	return ret;
 
 err_battery:
+	kfree(wdata->battery.name);
+err_battery_name:
 	input_unregister_device(wdata->input);
 	wdata->input = NULL;
 err_input:
