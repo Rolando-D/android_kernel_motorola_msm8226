@@ -20,8 +20,10 @@
 
 #include <linux/delay.h>
 #include <linux/earlysuspend.h>
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
 #ifdef CONFIG_POWERSUSPEND
 #include <linux/powersuspend.h>
+#endif
 #endif
 #include <linux/i2c.h>
 #include <linux/input.h>
@@ -560,9 +562,11 @@ static void ct406_prox_mode_uncovered(struct ct406_data *ct)
 		pilt = 0;
 	if (piht > ct->pdata_max)
 		piht = ct->pdata_max;
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
 	prox_covered = false;
 	if(ct_suspended)
 		touch_resume();
+#endif
 	ct->prox_mode = CT406_PROX_MODE_UNCOVERED;
 	ct->prox_low_threshold = pilt;
 	ct->prox_high_threshold = piht;
@@ -578,14 +582,16 @@ static void ct406_prox_mode_covered(struct ct406_data *ct)
 
 	if (pilt > ct->pdata_max)
 		pilt = ct->pdata_max;
-	prox_covered = true;
 	ct->prox_mode = CT406_PROX_MODE_COVERED;
 	ct->prox_low_threshold = pilt;
 	ct->prox_high_threshold = piht;
 	ct406_write_prox_thresholds(ct);
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
+	prox_covered = true;
 	if (ct_suspended) {
 		touch_suspend();
 	}
+#endif
 	pr_info("%s: Prox mode covered\n", __func__);
 }
 
@@ -1498,6 +1504,7 @@ static int ct406_pm_event(struct notifier_block *this,
 	return NOTIFY_DONE;
 }
 
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
 #ifdef CONFIG_POWERSUSPEND
 static void ct_power_suspend(struct power_suspend *h) {
 	struct ct406_data *ct = ct406_misc_data;
@@ -1521,6 +1528,7 @@ static struct power_suspend ct_power_suspend_handler = {
 	.suspend = ct_power_suspend,
 	.resume = ct_power_resume,
 };
+#endif
 #endif
 
 #ifdef CONFIG_OF
@@ -1713,7 +1721,9 @@ static int ct406_probe(struct i2c_client *client,
 		pr_err("%s:device init failed: %d\n", __func__, error);
 		goto error_revision_read_failed;
 	}
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
 	ct406_enable_prox(ct);
+#endif
 
 	ct->pm_notifier.notifier_call = ct406_pm_event;
 	error = register_pm_notifier(&ct->pm_notifier);
@@ -1807,8 +1817,10 @@ static struct i2c_driver ct406_i2c_driver = {
 
 static int __init ct406_init(void)
 {
+#ifdef CONFIG_TOUCHSCREEN_PREVENT_SLEEP
 #ifdef CONFIG_POWERSUSPEND
 	register_power_suspend(&ct_power_suspend_handler);
+#endif
 #endif
 	return i2c_add_driver(&ct406_i2c_driver);
 }
