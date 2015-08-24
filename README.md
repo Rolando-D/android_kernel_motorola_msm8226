@@ -1,4 +1,8 @@
+![Alt text](http://i58.tinypic.com/xclvdc.jpg)
+
 	Linux kernel release 3.x <http://kernel.org/>
+
+    Toolchain used for MonsterKernel: https://github.com/RolanDroid/android_prebuilt_toolchains
 
 These are the release notes for Linux version 3.  Read them carefully,
 as they tell you what this is all about, explain how to install the
