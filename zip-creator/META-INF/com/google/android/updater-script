@@ -1,0 +1,18 @@
+ui_print("");
+ui_print("=================================");
+ui_print("|       |* MonsterKernel *|        |");
+ui_print("=================================");
+ui_print("");
+mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/system", "/system");
+ui_print("Update modules ...");
+package_extract_dir("system", "/system");
+set_progress(1.000000);
+package_extract_dir("tools", "/tmp");
+package_extract_file("zImage", "/tmp/zImage");
+set_perm(0, 0, 0777, "/tmp/kernel_flash.sh");
+set_perm(0, 0, 0777, "/tmp/mkbootimg");
+set_perm(0, 0, 0777, "/tmp/unpackbootimg");
+ui_print("Installing kernel...");
+run_program("/tmp/kernel_flash.sh");
+unmount("/system");
+ui_print("Done!");
