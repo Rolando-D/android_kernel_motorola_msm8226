@@ -142,14 +142,16 @@ unset cleanzipcheck
 # Menu - Start
 
 customkernel=MonsterKernel
+version=V1
 export ARCH=arm
+daytime=$(date +%d""%m""%Y)
 
 buildsh() {
 kernelversion=`cat Makefile | grep VERSION | cut -c 11- | head -1`
 kernelpatchlevel=`cat Makefile | grep PATCHLEVEL | cut -c 14- | head -1`
 kernelsublevel=`cat Makefile | grep SUBLEVEL | cut -c 12- | head -1`
 kernelname=`cat Makefile | grep NAME | cut -c 8- | head -1`
-zipfile="$customkernel-$target$variant.zip"
+zipfile="$customkernel-$version$target$variant-$daytime.zip"
 lszip=`ls zip-creator/*.zip 2>/dev/null | wc -l`
 customoutput
 clear

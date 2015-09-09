@@ -17,7 +17,5 @@ ui_print("Installing kernel...");
 assert(run_program("/tmp/dump_image.sh", "qcom", "boot", "/tmp") == 0);
 assert(run_program("/tmp/bootimg.sh") == 0);
 assert(run_program("/tmp/write_image.sh", "qcom", "boot", "/tmp") == 0);
-package_extract_dir("system", "/system");
-set_perm(0, 0, 0755, "/system/etc/init.d/99LMK");
 unmount("/system");
 ui_print("Done!");
