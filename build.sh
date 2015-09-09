@@ -142,7 +142,7 @@ unset cleanzipcheck
 # Menu - Start
 
 customkernel=MonsterKernel
-version=V1
+version=V2 
 export ARCH=arm
 daytime=$(date +%d""%m""%Y)
 
