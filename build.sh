@@ -45,7 +45,7 @@ fi
 # Clean - Start
 
 cleanzip() {
-rm -rf zip-creator/*.zip zip-creator/zImage zip-creator/system/lib/modules/*.ko
+rm -rf zip-creator/*.zip zip-creator/kernel/zImage zip-creator/system/lib/modules/*.ko
 cleanzipcheck="Done"
 unset zippackagecheck adbcopycheck
 }
@@ -62,12 +62,10 @@ unset buildprocesscheck target serie variant maindevicecheck BUILDTIME
 
 maindevice() {
 echo "${bldred}Motorola device...${txtrst}"
-echo "1) thea"
-echo "2) titan"
+echo "1) thea/titan"
 read -p "Choice: " -n 1 -s choice
 case "$choice" in
-	1 ) target="thea"; variant="thea" echo "$choice - $target$variant"; make thea_defconfig &> /dev/null; maindevicecheck="On";;
-	2 ) target="titan";variant="titan" echo "$choice - $target$variant"; make titan_defconfig &> /dev/null; maindevicecheck="On";;
+	1 ) target="thea/titan"; variant="thea" echo "$choice - $target$variant"; make thea_defconfig &> /dev/null; maindevicecheck="On";;
 	* ) echo "$choice - This option is not valid"; sleep 2;;
 esac
 }
@@ -122,23 +120,19 @@ fi
 # Build Process - End
 
 zippackage() {
-if [ "$target" == "thea-" ]; then
-	tothea
-elif [ "$target" == "titan-" ]; then
-	totitan
+if [ "$target" == "thea/titan-" ]; then
+	tothea/titan
 fi
 
-cp arch/arm/boot/zImage zip-creator
+cp arch/arm/boot/zImage zip-creator/kernel
 find . -name *.ko | xargs cp -a --target-directory=zip-creator/system/lib/modules/ &> /dev/null
 
 cd zip-creator
 zip -r $zipfile * -x */.gitignore *.zip &> /dev/null
 cd ..
 
-if [ "$target" == "thea-" ]; then
-	ofthea
-elif [ "$target" == "titan-" ]; then
-	oftitan
+if [ "$target" == "thea/titan-" ]; then
+	ofthea/titan
 fi
 
 zippackagecheck="Done"
