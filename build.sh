@@ -45,7 +45,7 @@ fi
 # Clean - Start
 
 cleanzip() {
-rm -rf zip-creator/*.zip zip-creator/kernel/zImage zip-creator/system/lib/modules/*.ko
+rm -rf zip-creator/*.zip zip-creator/zImage zip-creator/system/lib/modules/*.ko
 cleanzipcheck="Done"
 unset zippackagecheck adbcopycheck
 }
@@ -124,7 +124,7 @@ if [ "$target" == "thea/titan-" ]; then
 	tothea/titan
 fi
 
-cp arch/arm/boot/zImage zip-creator/kernel
+cp arch/arm/boot/zImage zip-creator
 find . -name *.ko | xargs cp -a --target-directory=zip-creator/system/lib/modules/ &> /dev/null
 
 cd zip-creator
