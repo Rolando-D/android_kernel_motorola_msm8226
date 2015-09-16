@@ -106,6 +106,11 @@ config CPU_FREQ_DEFAULT_GOV_LIONHEART
 	help
 	  Use the CPUFreq governor 'Lionheart' as default.
 
+config CPU_FREQ_DEFAULT_GOV_ALUCARD
+  	bool "alucard"
+		select CPU_FREQ_GOV_ALUCARD
+		help
+
 config CPU_FREQ_DEFAULT_GOV_INTERACTIVE
 	bool "interactive"
 	select CPU_FREQ_GOV_INTERACTIVE
@@ -217,6 +222,10 @@ config CPU_FREQ_GOV_LIONHEART
 	depends on CPU_FREQ
 	help
 	  'Lionheart' - A brave and agile conservative-based governor.
+
+config CPU_FREQ_GOV_ALUCARD
+	tristate "'alucard' cpufreq governor"
+	depends on CPU_FREQ
 
 config CPU_BOOST
 	tristate "Event base short term CPU freq boost"
