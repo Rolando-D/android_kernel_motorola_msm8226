@@ -149,7 +149,7 @@ fi
 
 zippackage() {
 
-cp arch/$ARCH/boot/zImage zip-creator
+cp arch/$ARCH/boot/zImage zip-creator/kernel
 find . -name *.ko | xargs cp -a --target-directory=zip-creator/system/lib/modules/ &> /dev/null
 
 cd zip-creator
