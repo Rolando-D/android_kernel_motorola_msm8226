@@ -63,7 +63,7 @@ unset buildprocesscheck target serie variant maindevicecheck BUILDTIME
 # Main Process - Start
 
 maindevice() {
-echo "-${bldred}Device${txtrst}-"
+echo "-${bldred}MOTOROLA${txtrst}-"
 echo "1) Moto G 2014 (thea/titan)"
 unset errorchoice
 read -p "Choice: " -n 1 -s choice
@@ -73,7 +73,7 @@ case "$choice" in
 esac
 if ! [ "$errorchoice" == "ON" ]; then
 	echo "$choice - $target$variant"; make $defconfig &> /dev/null | echo "Setting..."; maindevicecheck="ON"
-	zipfile="$customkernel-$version-$target$variant-$daytime.zip"
+	zipfile="$customkernel-$version$target$variant-$daytime.zip"
 fi
 }
 
@@ -309,7 +309,7 @@ if [ -e build.sh ]; then
         version=V3
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
-	zipfile="$customkernel-$version-$target$variant-$daytime.zip"
+	zipfile="$customkernel-$version$target$variant-$daytime.zip"
 
 	if [ -f zip-creator/*.zip ]; then
 		unset cleanzipcheck
