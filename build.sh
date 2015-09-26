@@ -73,7 +73,7 @@ case "$choice" in
 esac
 if ! [ "$errorchoice" == "ON" ]; then
 	echo "$choice - $target$variant"; make $defconfig &> /dev/null | echo "Setting..."; maindevicecheck="ON"
-	zipfile="$customkernel-$version$target$variant-$daytime.zip"
+	zipfile="$customkernel-$version-$target$variant-$daytime.zip"
 fi
 }
 
@@ -98,7 +98,7 @@ if [ -d ../android_prebuilt_toolchains ]; then
 		echo "$ToolchainCompile"
 	fi
 else
-	echo "Script says: You don't have TeamVee Prebuilt Toolchains"
+	echo "Script says: You don't have RolanDroid Prebuilt Toolchains"
 	echo ""
 	echo "Script says: Please specify a location"
 	echo "Script says: and the prefix of the chosen toolchain at the end"
@@ -309,7 +309,7 @@ if [ -e build.sh ]; then
         version=V3
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
-	zipfile="$customkernel-$version$target$variant-$daytime.zip"
+	zipfile="$customkernel-$version-$target$variant-$daytime.zip"
 
 	if [ -f zip-creator/*.zip ]; then
 		unset cleanzipcheck
