@@ -73,7 +73,7 @@ case "$choice" in
 esac
 if ! [ "$errorchoice" == "ON" ]; then
 	echo "$choice - $target$variant"; make $defconfig &> /dev/null | echo "Setting..."; maindevicecheck="ON"
-	zipfile="$customkernel-$version-$target$variant-$daytime.zip"
+	zipfile="$customkernel-$version-$daytime.zip"
 fi
 }
 
@@ -305,7 +305,7 @@ if [ -e build.sh ]; then
         version=V4
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
-	zipfile="$customkernel-$version-$target$variant-$daytime.zip"
+	zipfile="$customkernel-$version-$daytime.zip"
 
 	if [ -f zip-creator/*.zip ]; then
 		unset cleanzipcheck
