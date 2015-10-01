@@ -63,17 +63,17 @@ unset buildprocesscheck target serie variant maindevicecheck BUILDTIME
 # Main Process - Start
 
 maindevice() {
-echo "-${bldred}MOTOROLA${txtrst}-"
-echo "1) Moto G 2014 (thea/titan)"
+echo "-${bldred}Device${txtrst}-"
+echo "1) Moto G 2014 (Thea/Titan)"
 unset errorchoice
 read -p "Choice: " -n 1 -s choice
 case "$choice" in
-	1 ) target="thea/titan"; defconfig="thea_defconfig";;
+	1 ) target="Thea/Titan"; defconfig="thea_defconfig";;
 	* ) echo "$choice - This option is not valid"; sleep .5; errorchoice="ON";;
 esac
 if ! [ "$errorchoice" == "ON" ]; then
 	echo "$choice - $target$variant"; make $defconfig &> /dev/null | echo "Setting..."; maindevicecheck="ON"
-	zipfile="$customkernel-$version-$daytime.zip"
+	zipfile="$customkernel-$version-$device-$daytime.zip"
 fi
 }
 
@@ -303,9 +303,10 @@ esac
 if [ -e build.sh ]; then
 	customkernel=MonsterKernel
         version=V5
+        device=Thea/Titan
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
-	zipfile="$customkernel-$version-$daytime.zip"
+	zipfile="$customkernel-$version-$device-$daytime.zip"
 
 	if [ -f zip-creator/*.zip ]; then
 		unset cleanzipcheck
