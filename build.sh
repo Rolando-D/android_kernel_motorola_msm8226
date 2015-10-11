@@ -302,7 +302,7 @@ esac
 
 if [ -e build.sh ]; then
 	customkernel=MonsterKernel
-        version=V7
+        version=V8
         device=TheaTitan
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
