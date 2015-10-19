@@ -65,10 +65,12 @@ unset buildprocesscheck target serie variant maindevicecheck BUILDTIME
 maindevice() {
 echo "-${bldred}Device${txtrst}-"
 echo "1) Moto G 2014 (Thea/Titan)"
+echo "2) Pure kernel (Thea/Titan)"
 unset errorchoice
 read -p "Choice: " -n 1 -s choice
 case "$choice" in
 	1 ) target="Thea/Titan"; defconfig="thea_defconfig";;
+	2 ) target="Thea/Titan"; defconfig="thea-pure_defconfig";;
 	* ) echo "$choice - This option is not valid"; sleep .5; errorchoice="ON";;
 esac
 if ! [ "$errorchoice" == "ON" ]; then
@@ -302,7 +304,7 @@ esac
 
 if [ -e build.sh ]; then
 	customkernel=MonsterKernel
-        version=V7
+        version=V9
         device=TheaTitan
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
