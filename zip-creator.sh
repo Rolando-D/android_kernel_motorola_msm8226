@@ -15,4 +15,3 @@ zipfile="$customkernel-$version-$device-$daytime.zip"
 
 cd zip-creator
 zip -r $zipfile * -x */.gitignore *.zip &> /dev/null
-cd ..
