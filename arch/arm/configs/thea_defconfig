@@ -2,6 +2,14 @@
 # Automatically generated file; DO NOT EDIT.
 # Linux/arm 3.4.42 Kernel Configuration
 #
+#
+# Features
+#
+CONFIG_SOUND_CONTROL_HAX_3_GPL=y
+
+#
+# Initial Setup
+#
 CONFIG_ARM=y
 CONFIG_ARM_HAS_SG_CHAIN=y
 CONFIG_SYS_SUPPORTS_APM_EMULATION=y
