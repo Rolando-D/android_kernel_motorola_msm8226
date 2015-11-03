@@ -122,6 +122,12 @@ config IOSCHED_FIOPS
           IOPS equally among all processes in the system. It's mainly for
           Flash based storage.
 
+config IOSCHED_FIFO
+ 	 bool
+ 	 default y
+ 	 ---help---
+ 	 Fifo is similar to no-op I/O scheduler and it's a minimal scheduler that does basic merging and sorting.
+
 choice
 	prompt "Default I/O scheduler"
 	default DEFAULT_CFQ
