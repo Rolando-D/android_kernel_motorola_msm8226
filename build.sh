@@ -305,7 +305,7 @@ esac
 if [ -e build.sh ]; then
 	customkernel=MonsterKernel
 	toolchain=UBERTC-4.9
-        version=V1.0
+        version=V1.1
         device=TheaTitan
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
