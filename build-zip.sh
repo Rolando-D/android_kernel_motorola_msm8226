@@ -9,7 +9,7 @@ cp arch/arm/boot/zImage zip-creator/kernel
 find . -name *.ko | xargs cp -a --target-directory=zip-creator/system/lib/modules/ &> /dev/null
 
 customkernel=MonsterKernel
-version=V11
+version=V12
 device=TheaTitan
 daytime=$(date +%d""%m""%Y)
 zipfile="$customkernel-$version-$device-$daytime.zip"
