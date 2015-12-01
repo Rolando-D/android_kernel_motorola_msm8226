@@ -304,12 +304,11 @@ esac
 
 if [ -e build.sh ]; then
 	customkernel=MonsterKernel
-	toolchain=UBERTC-4.9
-        version=V1.1
+        version=V3
         device=TheaTitan
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
-	zipfile="$customkernel-$toolchain-$version-$device-$daytime.zip"
+	zipfile="$customkernel-$version-$device-$daytime.zip"
 
 	if [ -f zip-creator/*.zip ]; then
 		unset cleanzipcheck

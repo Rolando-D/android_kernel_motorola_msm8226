@@ -15,7 +15,7 @@ echo "${bldgrn}this is an open source script, feel free to use and share it${txt
 
 echo "${bldblu}Info of MonsterKernel...${txtbld}"
 
-echo "${bldgrn}Version=${txtbld}"V1
+echo "${bldgrn}Version=${txtbld}"V3
 
 echo "${bldblu}Changelog of MonsterKernel...${txtbld}"\
 
