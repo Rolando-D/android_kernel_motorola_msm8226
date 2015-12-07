@@ -66,11 +66,13 @@ maindevice() {
 echo "-${bldred}Device${txtrst}-"
 echo "1) Moto G 2014 (Thea/Titan)"
 echo "2) Moto G (Falcon)"
+echo "3) Moto G 4G (Peregrine)"
 unset errorchoice
 read -p "Choice: " -n 1 -s choice
 case "$choice" in
 	1 ) target="Thea/Titan"; defconfig="thea_defconfig" cp zip-creator/dt-images/TheaTitan/dt.img zip-creator/kernel ;;
 	2 ) target="Falcon"; defconfig="falcon_defconfig" cp zip-creator/dt-images/falcon/dt.img zip-creator/kernel ;;
+	3 ) target="Peregrine"; defconfig="peregrine_defconfig" cp zip-creator/dt-images/peregrine/dt.img zip-creator/kernel ;;
 	* ) echo "$choice - This option is not valid"; sleep .5; errorchoice="ON";;
 esac
 if ! [ "$errorchoice" == "ON" ]; then
