@@ -62,6 +62,8 @@ unset buildprocesscheck target serie variant maindevicecheck BUILDTIME
 
 # Main Process - Start
 
+mkdir zip-creator/kernel
+
 maindevice() {
 echo "-${bldred}Device${txtrst}-"
 echo "1) Moto G 2014 (Thea/Titan)"
