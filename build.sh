@@ -63,6 +63,7 @@ unset buildprocesscheck target serie variant maindevicecheck BUILDTIME
 # Main Process - Start
 
 mkdir zip-creator/kernel
+rm -rf zip-creator/kernel/dt.img 
 
 maindevice() {
 echo "-${bldred}Device${txtrst}-"
