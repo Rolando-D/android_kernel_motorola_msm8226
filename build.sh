@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# You need to download https://github.com/RolanDroid/android_prebuilt_toolchains
-# Clone in the same folder as the kernel to choose a toolchain and not specify a location
+# You need to clone
+# https://bitbucket.org/UBERTC/arm-eabi-4.8 for build with GCC-4.8 (UBERTC)
+# https://bitbucket.org/UBERTC/arm-eabi-5.2 for build with GCC-5.2 (UBERTC)
 
 # Prepare output customization commands - Start
 
