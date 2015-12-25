@@ -91,8 +91,8 @@ if [ -d ../android_prebuilt_toolchains ]; then
 	unset errortoolchain
 	read -p "Choice: " -n 1 -s toolchain
 	case "$toolchain" in
-		1 ) export CROSS_COMPILE="../android_prebuilt_toolchains/arm-eabi-4.7/bin/arm-eabi-"; ToolchainCompile="GCC 4.7";;
-		2 ) export CROSS_COMPILE="../android_prebuilt_toolchains/arm-eabi-5.2/bin/arm-eabi-"; ToolchainCompile="UBERTC 5.2";;
+		1 ) export CROSS_COMPILE="../arm-eabi-4.8/bin/arm-eabi-"; ToolchainCompile="GCC 4.8";;
+		2 ) export CROSS_COMPILE="../arm-eabi-5.2/bin/arm-eabi-"; ToolchainCompile="UBERTC 5.2";;
 		* ) echo "$toolchain - This option is not valid"; sleep .5; errortoolchain="ON";;
 	esac
 	if ! [ "$errortoolchain" == "ON" ]; then
