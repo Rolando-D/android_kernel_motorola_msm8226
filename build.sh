@@ -85,7 +85,7 @@ fi
 }
 
 maintoolchain() {
-if [ -d ../android_prebuilt_toolchains ]; then
+if [ -d ../ ]; then
 	echo "1) 4.8 Google GCC"
 	echo "2) UBERTC GCC 5.2"
 	unset errortoolchain
