@@ -86,15 +86,13 @@ fi
 
 maintoolchain() {
 if [ -d ../android_prebuilt_toolchains ]; then
-	echo "1) 4.7 Google GCC"
-	echo "2) 4.8 Google GCC"
-	echo "3) 4.9.3 Linaro GCC"
+	echo "1) 4.8 Google GCC"
+	echo "2) UBERTC GCC 5.2"
 	unset errortoolchain
 	read -p "Choice: " -n 1 -s toolchain
 	case "$toolchain" in
 		1 ) export CROSS_COMPILE="../android_prebuilt_toolchains/arm-eabi-4.7/bin/arm-eabi-"; ToolchainCompile="GCC 4.7";;
-		2 ) export CROSS_COMPILE="../android_prebuilt_toolchains/arm-eabi-4.8/bin/arm-eabi-"; ToolchainCompile="GCC 4.8";;
-		3 ) export CROSS_COMPILE="../android_prebuilt_toolchains/arm-cortex-linux-gnueabi-linaro_4.9.3-2015.03/bin/arm-cortex-linux-gnueabi-"; ToolchainCompile="Linaro 4.9.3";;
+		2 ) export CROSS_COMPILE="../android_prebuilt_toolchains/arm-eabi-5.2/bin/arm-eabi-"; ToolchainCompile="UBERTC 5.2";;
 		* ) echo "$toolchain - This option is not valid"; sleep .5; errortoolchain="ON";;
 	esac
 	if ! [ "$errortoolchain" == "ON" ]; then
