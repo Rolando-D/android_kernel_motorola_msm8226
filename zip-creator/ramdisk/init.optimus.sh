@@ -29,24 +29,6 @@ echo 1 > /sys/module/cpu_boost/parameters/wakeup_boost
 echo 1 > /sys/module/cpu_boost/parameters/load_based_syncs 
 echo 20 > /sys/module/cpu_boost/parameters/migration_load_threshold
 
-
-# CPU Governor
-echo "impulse" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-echo "impulse" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
-echo "impulse" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor
-echo "impulse" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_governor
-
-#Impulse Governor Tuning
-echo 20000 1400000:40000 1700000:20000 > /sys/devices/system/cpu/cpufreq/impulse/above_hispeed_delay
-echo 998400 > /sys/devices/system/cpu/cpufreq/impulse/hispeed_freq
-echo 1 > /sys/devices/system/cpu/cpufreq/impulse/io_is_busy
-echo 85 1500000:90 1800000:70 > /sys/devices/system/cpu/cpufreq/impulse/target_loads
-echo 40000 > /sys/devices/system/cpu/cpufreq/impulse/min_sample_time
-echo 30000 > /sys/devices/system/cpu/cpufreq/impulse/timer_rate
-echo 100000 > /sys/devices/system/cpu/cpufreq/impulse/max_freq_hysteresis
-echo 30000 > /sys/devices/system/cpu/cpufreq/impulse/timer_slack
-echo 1 > /sys/devices/system/cpu/cpufreq/impulse/powersave_bias
-
 #Background Writeout
 echo 200 > /proc/sys/vm/dirty_expire_centisecs
 echo 40 > /proc/sys/vm/dirty_ratio
