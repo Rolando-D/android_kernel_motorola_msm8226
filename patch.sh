@@ -24,16 +24,31 @@ echo "${bldgrn}Cleaned rebase-apply!${txtrst}"
 
 rm -rf .git/rebase-apply 
 
-# First patch
 curl $1.patch | git am
 
-# Second Patch
 if ! [ "$2" == "" ]; then
 curl $2.patch | git am
 fi
 
-# Third Patch
 if ! [ "$3" == "" ]; then
 curl $3.patch | git am
 fi
+
+if ! [ "$4" == "" ]; then
+curl $4.patch | git am
+fi
+
+if ! [ "$5" == "" ]; then
+curl $5.patch | git am
+fi
+
+if ! [ "$6" == "" ]; then
+curl $6.patch | git am
+fi
+
+if ! [ "$7" == "" ]; then
+curl $7.patch | git am
+fi
+
+
 
