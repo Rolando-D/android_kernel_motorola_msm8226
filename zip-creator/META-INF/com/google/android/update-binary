@@ -31,7 +31,6 @@ mkdir -p /tmp/anykernel;
 cd /tmp/anykernel;
 unzip -o "$ZIP";
 
-ui_print "$(file_getprop /tmp/anykernel/anykernel.sh kernel.string)";
 ui_print "**********************************";
 ui_print "MonsterKernel-MarshMallow";
 ui_print "By RolanDroid@XDA.... ";

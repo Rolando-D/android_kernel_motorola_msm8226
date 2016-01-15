@@ -3,7 +3,6 @@
 
 ## AnyKernel setup
 # EDIFY properties
-kernel.string=Flashhhh@ xda-developers
 do.devicecheck=0
 do.initd=0
 do.modules=0
