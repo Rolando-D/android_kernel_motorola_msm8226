@@ -50,5 +50,16 @@ if ! [ "$7" == "" ]; then
 curl $7.patch | git am
 fi
 
+if ! [ "$8" == "" ]; then
+curl $9.patch | git am
+fi
+
+if ! [ "$9" == "" ]; then
+curl $9.patch | git am
+fi
+
+if ! [ "$10" == "" ]; then
+curl $10.patch | git am
+fi
 
 
