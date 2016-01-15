@@ -3,6 +3,7 @@
 # You need to clone
 # https://bitbucket.org/UBERTC/arm-eabi-4.8 for build with GCC-4.8 (UBERTC)
 # https://bitbucket.org/UBERTC/arm-eabi-5.2 for build with GCC-5.2 (UBERTC)
+# https://bitbucket.org/UBERTC/arm-eabi-5.3 for build with GCC-5.3 (UBERTC)
 
 # Prepare output customization commands - Start
 
@@ -86,11 +87,13 @@ maintoolchain() {
 if [ -d ../ ]; then
 	echo "1) 4.8 Google GCC"
 	echo "2) UBERTC GCC 5.2"
+	echo "3) UBERTC GCC 5.3"
 	unset errortoolchain
 	read -p "Choice: " -n 1 -s toolchain
 	case "$toolchain" in
 		1 ) export CROSS_COMPILE="../arm-eabi-4.8/bin/arm-eabi-"; ToolchainCompile="GCC 4.8";;
 		2 ) export CROSS_COMPILE="../arm-eabi-5.2/bin/arm-eabi-"; ToolchainCompile="UBERTC 5.2";;
+		3 ) export CROSS_COMPILE="../arm-eabi-5.3/bin/arm-eabi-"; ToolchainCompile="UBERTC 5.3";;
 		* ) echo "$toolchain - This option is not valid"; sleep .5; errortoolchain="ON";;
 	esac
 	if ! [ "$errortoolchain" == "ON" ]; then
@@ -101,7 +104,7 @@ else
 	echo ""
 	echo "Script says: Please specify a location"
 	echo "Script says: and the prefix of the chosen toolchain at the end"
-	echo "RolanDroid says: GCC 4.6 ex. ../arm-eabi-4.6/bin/arm-eabi-"
+	echo "RolanDroid says: GCC 5.3 ex. ../arm-eabi-5.3/bin/arm-eabi-"
 	read -p "Place: " CROSS_COMPILE
 fi
 }
