@@ -305,7 +305,7 @@ esac
 
 if [ -e build.sh ]; then
 	customkernel=MonsterKernel
-        version=V5.2
+        version=V6.0
 	export ARCH=arm
 	daytime=$(date +%d""%m""%Y)
 	zipfile="$customkernel-$version-$daytime.zip"
