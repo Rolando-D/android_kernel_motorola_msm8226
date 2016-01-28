@@ -3,42 +3,49 @@
 # custom busybox installation shortcut
 bb=/sbin/bb/busybox;
 
+# Enable Fsync
+	echo "Y" > /sys/module/sync/parameters/fsync_enabled
+
+#enable arch_power
+echo "ARCH_POWER" > /sys/kernel/debug/sched_features
+echo "1" > /sys/kernel/sched/arch_power
+
+#disable gentle fair sleepers
+echo "NO_GENTLE_FAIR_SLEEPERS" > /sys/kernel/debug/sched_features
+echo "0" > /sys/kernel/sched/gentle_fair_sleepers
+
+
+#Set default Min Freq
+echo "300000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+echo "300000" > /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq
+echo "300000" > /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq
+echo "300000" > /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq
+
+# Set default hotplug:
+	echo "1" > /sys/module/intelli_plug/parameters/intelli_plug_active
+	echo "1" > /sys/module/intelli_plug/parameters/touch_boost_active
+	echo "787200" > /sys/module/intelli_plug/parameters/screen_off_max
+
 # Set TCP westwood
 	echo "westwood" > /proc/sys/net/ipv4/tcp_congestion_control
 
 # Set IOSched
- echo "zen" > /sys/block/mmcblk0/queue/scheduler
+        echo "bfq" > /sys/block/mmcblk0/queue/scheduler
+
+# disable debugging on some modules
+	echo "0" > /sys/module/kernel/parameters/initcall_debug
+	echo "0" > /sys/module/alarm/parameters/debug_mask
+	echo "0" > /sys/module/alarm_dev/parameters/debug_mask
+	echo "0" > /sys/module/binder/parameters/debug_mask
+	echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask
+
+#Power Mode
+ echo "1" > /sys/module/msm_pm/modes/cpu0/retention/idle_enabled
+ echo "1" > /sys/module/msm_pm/modes/cpu1/retention/idle_enabled
+ echo "1" > /sys/module/msm_pm/modes/cpu2/retention/idle_enabled
+ echo "1" > /sys/module/msm_pm/modes/cpu2/retention/idle_enabled
  echo "512" > /sys/block/mmcblk0/bdi/read_ahead_kb
 
-# MSM Hotplug tweaks
-echo 1 > /sys/module/msm_hotplug/msm_enabled
-echo 1 > /sys/module/msm_hotplug/min_cpus_online
-echo 500 > /sys/module/msm_hotplug/down_lock_duration
-echo 2500 > /sys/module/msm_hotplug/boost_lock_duration
-echo "200 5:100 50:50 350:200" > /sys/module/msm_hotplug/update_rates
-echo 100 > /sys/module/msm_hotplug/fast_lane_load
+#Simple Gpu Algorithm
+echo 1 > /sys/module/simple_gpu_algorithm/parameters/simple_gpu_activate
 
-# CPU BOOST
-
-echo 20 > /sys/module/cpu_boost/parameters/boost_ms
-echo 500 > /sys/module/cpu_boost/parameters/input_boost_ms
-echo 998400 > /sys/module/cpu_boost/parameters/input_boost_freq
-echo 1094400 > /sys/module/cpu_boost/parameters/sync_threshold
-echo 1 > /sys/module/cpu_boost/parameters/hotplug_boost
-echo 1 > /sys/module/cpu_boost/parameters/wakeup_boost
-echo 1 > /sys/module/cpu_boost/parameters/load_based_syncs 
-echo 20 > /sys/module/cpu_boost/parameters/migration_load_threshold
-
-#Background Writeout
-echo 200 > /proc/sys/vm/dirty_expire_centisecs
-echo 40 > /proc/sys/vm/dirty_ratio
-echo 5 > /proc/sys/vm/dirty_background_ratio
-echo 10 > /proc/sys/vm/swappiness
-
-#Misc Tweaks
-echo 0 > /sys/kernel/sched/gentle_fair_sleepers
-echo 1 > /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk
-echo "0" > /sys/module/kernel/parameters/initcall_debug;
-echo "0" > /sys/module/alarm_dev/parameters/debug_mask;
-echo "0" > /sys/module/binder/parameters/debug_mask;
-echo "0" > /sys/module/xt_qtaguid/parameters/debug_mask;

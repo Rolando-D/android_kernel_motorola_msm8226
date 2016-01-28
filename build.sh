@@ -49,7 +49,7 @@ fi
 # Clean - Start
 
 cleanzip() {
-rm -rf zip-creator/*.zip zip-creator/zImage zip-creator/system/lib/modules/*.ko
+rm -rf zip-creator/*.zip zip-creator/zImage-dtb zip-creator/system/lib/modules/*.ko
 cleanzipcheck="Done"
 unset zippackagecheck adbcopycheck
 }
@@ -120,7 +120,7 @@ if [ "$NR_CPUS" -le "2" ]; then
 	NR_CPUS="4"
 fi
 echo "${bldblu}Building $customkernel with $NR_CPUS jobs at once${txtrst}"
-rm -rf arch/$ARCH/boot/zImage
+rm -rf arch/$ARCH/boot/zImage-dtb
 if [ "$buildoutput" == "ON" ]; then
 	make -j${NR_CPUS}
 else
@@ -128,7 +128,7 @@ else
 fi
 END=$(date +"%s")
 BUILDTIME=$(($END - $START))
-if [ -f arch/$ARCH/boot/zImage ]; then
+if [ -f arch/$ARCH/boot/zImage-dtb ]; then
 	buildprocesscheck="Done"
 	unset cleankernelcheck
 else
@@ -142,7 +142,7 @@ LBUILDTIME=$(($LEND - $START))
 echo -ne "\r\033[K"
 echo -ne "${bldgrn}Build Time: $(($LBUILDTIME / 60)) minutes and $(($LBUILDTIME % 60)) seconds.${txtrst}"
 sleep 1
-if ! [ -f arch/$ARCH/boot/zImage ]; then
+if ! [ -f arch/$ARCH/boot/zImage-dtb ]; then
 	loop
 fi
 }
@@ -153,7 +153,7 @@ fi
 
 zippackage() {
 
-cp arch/$ARCH/boot/zImage zip-creator
+cp arch/$ARCH/boot/zImage-dtb zip-creator
 find . -name *.ko | xargs cp -a --target-directory=zip-creator/system/lib/modules/ &> /dev/null
 
 cd zip-creator
@@ -224,7 +224,7 @@ else
 		echo "5) Build $customkernel (${bldyel}$buildprocesscheck${txtrst})"
 	fi
 fi
-if [ -f arch/$ARCH/boot/zImage ]; then
+if [ -f arch/$ARCH/boot/zImage-dtb ]; then
 	echo "6) Build Zip Package (${bldyel}$zippackagecheck${txtrst})"
 fi
 if [ -f zip-creator/$zipfile ]; then
@@ -237,12 +237,12 @@ fi
 echo "-${bldmag}Status:${txtrst}-"
 buildtimemisc
 if [ "$maindevicecheck" == "" ]; then
-	if [ -f arch/$ARCH/boot/zImage ]; then
+	if [ -f arch/$ARCH/boot/zImage-dtb ]; then
 		echo "${bldblu}You have old Kernel build!${txtrst}"
 		buildprocesscheck="Old build"
 	fi
 elif [ "$CROSS_COMPILE" == "" ]; then
-	if [ -f arch/$ARCH/boot/zImage ]; then
+	if [ -f arch/$ARCH/boot/zImage-dtb ]; then
 		echo "${bldblu}You have old Kernel build!${txtrst}"
 		buildprocesscheck="Old build"
 	fi
@@ -280,7 +280,7 @@ case $x in
 	else
 		echo "$x - This option is not valid"; sleep .5; buildsh
 	fi;;
-	6) if [ -f arch/$ARCH/boot/zImage ]; then
+	6) if [ -f arch/$ARCH/boot/zImage-dtb ]; then
 		echo "$x - Ziping $customkernel"; zippackage; buildsh
 	else
 		echo "$x - This option is not valid"; sleep .5; buildsh

@@ -1,4 +1,4 @@
-# AnyKernel2 Ramdisk Mod Script
+# AnyKernel 2.0 Ramdisk Mod Script 
 # osm0sis @ xda-developers
 
 ## AnyKernel setup
@@ -8,8 +8,10 @@ do.initd=0
 do.modules=0
 do.cleanup=1
 device.name1=falcon
-device.name2=Moto G
-device.name3=moto g
+device.name2=Falcon
+device.name3=Moto G
+device.name4=
+device.name5=
 
 # shell variables
 block=/dev/block/platform/msm_sdcc.1/by-name/boot;
@@ -26,25 +28,20 @@ patch=/tmp/anykernel/patch;
 
 chmod -R 755 $bin;
 mkdir -p $ramdisk $split_img;
+cd $ramdisk;
 
-OUTFD=/proc/self/fd/$1;
-ui_print() { echo -e "ui_print $1\nui_print" > $OUTFD; }
+OUTFD=`ps | grep -v "grep" | grep -oE "update(.*)" | cut -d" " -f3`;
+ui_print() { echo "ui_print $1" >&$OUTFD; echo "ui_print" >&$OUTFD; }
 
 # dump boot and extract ramdisk
 dump_boot() {
   dd if=$block of=/tmp/anykernel/boot.img;
   $bin/unpackbootimg -i /tmp/anykernel/boot.img -o $split_img;
   if [ $? != 0 ]; then
-    ui_print " "; ui_print "Dumping/splitting image failed. Aborting..."; exit 1;
+    ui_print " "; ui_print "Dumping/unpacking image failed. Aborting...";
+    echo 1 > /tmp/anykernel/exitcode; exit;
   fi;
-  mv -f $ramdisk /tmp/anykernel/rdtmp;
-  mkdir -p $ramdisk;
-  cd $ramdisk;
   gunzip -c $split_img/boot.img-ramdisk.gz | cpio -i;
-  if [ $? != 0 -o -z "$(ls $ramdisk)" ]; then
-    ui_print " "; ui_print "Unpacking ramdisk failed. Aborting..."; exit 1;
-  fi;
-  cp -af /tmp/anykernel/rdtmp/* $ramdisk;
 }
 
 # repack ramdisk then build and write image
@@ -63,8 +60,8 @@ write_boot() {
     secondoff=`cat *-secondoff`;
     secondoff="--second_offset $secondoff";
   fi;
-  if [ -f /tmp/anykernel/zImage ]; then
-    kernel=/tmp/anykernel/zImage;
+  if [ -f /tmp/anykernel/zImage-dtb ]; then
+    kernel=/tmp/anykernel/zImage-dtb;
   else
     kernel=`ls *-zImage`;
     kernel=$split_img/$kernel;
@@ -77,14 +74,10 @@ write_boot() {
   fi;
   cd $ramdisk;
   find . | cpio -H newc -o | gzip > /tmp/anykernel/ramdisk-new.cpio.gz;
-  if [ $? != 0 ]; then
-    ui_print " "; ui_print "Repacking ramdisk failed. Aborting..."; exit 1;
-  fi;
   $bin/mkbootimg --kernel $kernel --ramdisk /tmp/anykernel/ramdisk-new.cpio.gz $second --cmdline "$cmdline" --board "$board" --base $base --pagesize $pagesize --kernel_offset $kerneloff --ramdisk_offset $ramdiskoff $secondoff --tags_offset $tagsoff $dtb --output /tmp/anykernel/boot-new.img;
-  if [ $? != 0 ]; then
-    ui_print " "; ui_print "Repacking image failed. Aborting..."; exit 1;
-  elif [ `wc -c < /tmp/anykernel/boot-new.img` -gt `wc -c < /tmp/anykernel/boot.img` ]; then
-    ui_print " "; ui_print "New image larger than boot partition. Aborting..."; exit 1;
+  if [ $? != 0 -o `wc -c < /tmp/anykernel/boot-new.img` -gt `wc -c < /tmp/anykernel/boot.img` ]; then
+    ui_print " "; ui_print "Repacking image failed. Aborting...";
+    echo 1 > /tmp/anykernel/exitcode; exit;
   fi;
   dd if=/tmp/anykernel/boot-new.img of=$block;
 }
@@ -99,7 +92,7 @@ replace_string() {
   fi;
 }
 
-# insert_line <file> <if search string> <before|after> <line match string> <inserted line>
+# insert_line <file> <if search string> <before/after> <line match string> <inserted line>
 insert_line() {
   if [ -z "$(grep "$2" $1)" ]; then
     case $3 in
@@ -107,7 +100,7 @@ insert_line() {
       after) offset=1;;
     esac;
     line=$((`grep -n "$4" $1 | cut -d: -f1` + offset));
-    sed -i "${line}s;^;${5}\n;" $1;
+    sed -i "${line}s;^;${5};" $1;
   fi;
 }
 
@@ -134,19 +127,6 @@ prepend_file() {
   fi;
 }
 
-# insert_file <file> <if search string> <before|after> <line match string> <patch file>
-insert_file() {
-  if [ -z "$(grep "$2" $1)" ]; then
-    case $3 in
-      before) offset=0;;
-      after) offset=1;;
-    esac;
-    line=$((`grep -n "$4" $1 | cut -d: -f1` + offset));
-    sed -i "${line}s;^;\n;" $1;
-    sed -i "$((line - 1))r $patch/$5" $1;
-  fi;
-}
-
 # append_file <file> <if search string> <patch file>
 append_file() {
   if [ -z "$(grep "$2" $1)" ]; then
@@ -158,11 +138,12 @@ append_file() {
 
 # replace_file <file> <permissions> <patch file>
 replace_file() {
-  cp -pf $patch/$3 $1;
+  cp -fp $patch/$3 $1;
   chmod $2 $1;
 }
 
 ## end methods
+
 
 ## AnyKernel permissions
 # set permissions for included files
@@ -173,24 +154,14 @@ dump_boot;
 
 # begin ramdisk changes
 
-#
-# disable powerHal and mpdecision if enabled
-# thanks to alberto & fabio for finding out the true location of powerhal
-# adapt the idea of blechdose and modified by hurtsky for anykernel script usage
-# rest in peace mpdecision
-#
-if [ -e /system/lib/hw/power.msm8226.so ]; then
-	[ -e /system/lib/hw/power.msm8226.so.bak ] || cp /system/lib/hw/power.msm8226.so /system/lib/hw/power.msm8226.so.bak;
-	[ -e /system/lib/hw/power.msm8226.so ] && rm -f /system/lib/hw/power.msm8226.so;
-fi;
-
-if [ -e /system/bin/mpdecision ]; then
-	[ -e /system/bin/mpdecisionbak ] || cp /system/bin/mpdecision /system/bin/mpdecisionbak;
-	[ -e /system/bin/mpdecision ] && rm -f /system/bin/mpdecision;
-fi;
-
 # kernel scripts
 append_file init.rc "optimus" init.optimus.rc;
+
+# disable mpdecision
+replace_line init.qcom.rc "service mpdecision /system/bin/mpdecision --avg_comp" "#service mpdecision /system/bin/mpdecision --avg_comp"
+replace_line init.qcom.rc "start mpdecision" "#start mpdecision"
+replace_line init.qcom.rc "stop mpdecision" "#stop mpdecision"
+
 
 # end ramdisk changes
 
