@@ -72,7 +72,7 @@ echo "3) Moto G 4G (Peregrine)"
 unset errorchoice
 read -p "Choice: " -n 1 -s choice
 case "$choice" in
-	1 ) target="Thea/Titan"; defconfig="thea_defconfig" ;;
+	1 ) target="Thea/Titan"; defconfig="titan_defconfig" ;;
 	2 ) target="Falcon"; defconfig="falcon_defconfig" ;;
 	3 ) target="Peregrine"; defconfig="peregrine_defconfig" ;;
 	* ) echo "$choice - This option is not valid"; sleep .5; errorchoice="ON";;
